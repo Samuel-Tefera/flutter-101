@@ -1,47 +1,97 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
-// With Flutter, you create user interfaces by combining "widgets"
-// You'll learn all about them (and much more) throughout this course!
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  // Every custom widget must have a build() method
-  // It tells Flutter, which widgets make up your custom widget
-  // Again: You'll learn all about that throughout the course!
   @override
   Widget build(BuildContext context) {
-    // Below, a bunch of built-in widgets are used (provided by Flutter)
-    // They will be explained in the next sections
-    // In this course, you will, of course, not just use them a lot but
-    // also learn about many other widgets!
     return MaterialApp(
-      title: 'Flutter First App',
-      theme: ThemeData(useMaterial3: true),
-      home: Scaffold(
-        appBar: AppBar(title: const Text('Welcome to Flutter')),
-        body: Container(
-          width: double.infinity,
-          padding: const EdgeInsets.all(12),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: const [
-              Text(
-                'Flutter - The Complete Guide Course',
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+      home: AddNumbersPage(),
+      debugShowCheckedModeBanner: false,
+    );
+  }
+}
+
+class AddNumbersPage extends StatefulWidget {
+  @override
+  _AddNumbersPageState createState() => _AddNumbersPageState();
+}
+
+class _AddNumbersPageState extends State<AddNumbersPage> {
+  final TextEditingController num1Controller = TextEditingController();
+  final TextEditingController num2Controller = TextEditingController();
+
+  double result = 0;
+
+  double getNum1() => double.tryParse(num1Controller.text) ?? 0;
+  double getNum2() => double.tryParse(num2Controller.text) ?? 0;
+
+  void addNumbers() {
+    setState(() {
+      result = getNum1() + getNum2();
+    });
+  }
+
+  void subtractNumbers() {
+    setState(() {
+      result = getNum1() - getNum2();
+    });
+  }
+
+  void multiplayNumber() {
+    setState(() {
+      result = getNum1() * getNum2();
+    });
+  }
+
+  void divideNumbers() {
+    setState(() {
+      result = getNum1() / getNum2();
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text("Calculator")),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            TextField(
+              controller: num1Controller,
+              keyboardType: TextInputType.number,
+              decoration: InputDecoration(
+                labelText: "Enter first number",
+                border: OutlineInputBorder(),
               ),
-              SizedBox(height: 16),
-              Text(
-                'Learn Flutter step-by-step, from the ground up.',
-                textAlign: TextAlign.center,
+            ),
+            SizedBox(height: 16),
+            TextField(
+              controller: num2Controller,
+              keyboardType: TextInputType.number,
+              decoration: InputDecoration(
+                labelText: "Enter second number",
+                border: OutlineInputBorder(),
               ),
-            ],
-          ),
+            ),
+            SizedBox(height: 16),
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                ElevatedButton(onPressed: addNumbers, child: Text("+")),
+                ElevatedButton(onPressed: subtractNumbers, child: Text("-")),
+                ElevatedButton(onPressed: multiplayNumber, child: Text("x")),
+                ElevatedButton(onPressed: divideNumbers, child: Text("/")),
+              ],
+            ),
+
+            SizedBox(height: 20),
+            Text("Result: $result", style: TextStyle(fontSize: 20)),
+          ],
         ),
       ),
     );
